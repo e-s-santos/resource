@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: resource
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: paper
+  sleuth:
+    otel:
+      sdk:
+        disabled: false
+    metrics: ""
+    logs: ""
+    exporter:
+      otlp:
+        enabled: true
+        endpoint: http://localhost:4317
+logging:
+  level:
+    org.springframework.data.mongodb.core: DEBUG
+    org.springframework.data.mongodb.core.aggregation: DEBUG
+# actuator   
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+        
+#otel
+otel:
+  endpointSpan: http://localhost:4318/v1/traces
+  propagators: tracecontext,b3
+  resource:
+    attributes:
+      deployment:
+        environment: dev
+      service:
+        name: cart
+        namespace: shop
